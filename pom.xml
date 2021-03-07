@@ -6,6 +6,7 @@
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>echo</module>
     </modules>
     <properties>
         <!-- Project properties -->
