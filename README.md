@@ -1,2 +1,2 @@
-# sockets-workshop
+# Java sockets workshop
 Socket related concept proofs 
