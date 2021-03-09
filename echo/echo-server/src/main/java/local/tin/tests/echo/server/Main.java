@@ -50,24 +50,25 @@ public class Main {
 
         if (args.length != 1) {
             LOGGER.error("Usage: java -jar echo-server...jar <port number>");
-        }
+        } else {
 
-        int portNumber = Integer.parseInt(args[0]);
- LOGGER.info("Waiting for connection...CTRL + C to exit.");
-        try (
-                ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[0]));
-                Socket clientSocket = serverSocket.accept();
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
-             LOGGER.info("Waiting for incoming messages...CTRL + C to exit.");
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                out.println(inputLine);
-                LOGGER.info("Received and echoed: " + inputLine);
+            int portNumber = Integer.parseInt(args[0]);
+            LOGGER.info("Waiting for connection...CTRL + C to exit.");
+            try (
+                    ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[0]));
+                    Socket clientSocket = serverSocket.accept();
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
+                LOGGER.info("Waiting for incoming messages...CTRL + C to exit.");
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    out.println(inputLine);
+                    LOGGER.info("Received and echoed: " + inputLine);
+                }
+            } catch (IOException e) {
+                LOGGER.error("Exception caught when trying to listen on port " + portNumber + " or listening for a connection", e);
+
             }
-        } catch (IOException e) {
-            LOGGER.error("Exception caught when trying to listen on port " + portNumber + " or listening for a connection", e);
-
         }
     }
 

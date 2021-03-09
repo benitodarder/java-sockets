@@ -52,24 +52,25 @@ public class Main {
 
         if (args.length != 2) {
             LOGGER.error("Usage: java -jar echo-client...jar <host name> <port number>");
-        }
+        } else {
 
-        String hostName = args[0];
-        int portNumber = Integer.parseInt(args[1]);
-        LOGGER.info("Connecting...");
-        try (Socket echoSocket = new Socket(hostName, portNumber);
-                PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
-            LOGGER.info("Connected... Please type any message and press enter...CTRL + C to exit.");
-            String userInput;
-            while ((userInput = stdIn.readLine()) != null) {
-                out.println(userInput);
-                LOGGER.info("Echoed: " + in.readLine());
-                LOGGER.info("Type any message and press enter...");
+            String hostName = args[0];
+            int portNumber = Integer.parseInt(args[1]);
+            LOGGER.info("Connecting...");
+            try (Socket echoSocket = new Socket(hostName, portNumber);
+                    PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+                    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+                LOGGER.info("Connected... Please type any message and press enter...CTRL + C to exit.");
+                String userInput;
+                while ((userInput = stdIn.readLine()) != null) {
+                    out.println(userInput);
+                    LOGGER.info("Echoed: " + in.readLine());
+                    LOGGER.info("Type any message and press enter...");
+                }
+            } catch (IOException e) {
+                LOGGER.error(e);
             }
-        } catch (IOException e) {
-            LOGGER.error(e);
         }
     }
 
