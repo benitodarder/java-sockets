@@ -48,8 +48,8 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        if (args.length != 1) {
-            LOGGER.error("Usage: java -jar echo-server...jar <port number>");
+        if (args.length != 2) {
+            LOGGER.error("Usage: java -jar echo-server...jar <port number> <buffer size>");
         } else {
 
             int portNumber = Integer.parseInt(args[0]);
@@ -60,10 +60,11 @@ public class Main {
                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
                 LOGGER.info("Waiting for incoming messages...CTRL + C to exit.");
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    out.println(inputLine);
-                    LOGGER.info("Received and echoed: " + inputLine);
+                char[] inputArray = new char[Integer.parseInt(args[1])];
+                while (in.read(inputArray) != -1) {
+                    out.write(inputArray);
+                    out.flush();
+                    LOGGER.info("Receiving and echoing: " + new String(inputArray));
                 }
             } catch (IOException e) {
                 LOGGER.error("Exception caught when trying to listen on port " + portNumber + " or listening for a connection", e);
