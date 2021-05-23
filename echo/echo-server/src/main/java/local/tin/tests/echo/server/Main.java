@@ -65,6 +65,7 @@ public class Main {
                     out.write(inputArray);
                     out.flush();
                     LOGGER.info("Receiving and echoing: " + new String(inputArray));
+                    inputArray = new char[Integer.parseInt(args[1])];
                 }
             } catch (IOException e) {
                 LOGGER.error("Exception caught when trying to listen on port " + portNumber + " or listening for a connection", e);

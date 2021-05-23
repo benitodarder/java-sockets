@@ -50,8 +50,8 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        if (args.length != 2) {
-            LOGGER.error("Usage: java -jar echo-client...jar <host name> <port number>");
+        if (args.length != 3) {
+            LOGGER.error("Usage: java -jar echo-client...jar <host name> <port number> <buffer size>");
         } else {
 
             String hostName = args[0];
@@ -62,11 +62,16 @@ public class Main {
                     BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
                     BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
                 LOGGER.info("Connected... Please type any message and press enter...CTRL + C to exit.");
-                String userInput;
-                while ((userInput = stdIn.readLine()) != null) {
-                    out.println(userInput);
-                    LOGGER.info("Echoed: " + in.readLine());
+                char[] inputArray = new char[Integer.parseInt(args[2])];
+                char[] echoedArray = new char[Integer.parseInt(args[2])];
+                while (stdIn.read(inputArray) != -1) {
+                    out.write(inputArray);
+                    out.flush();
+                    in.read(echoedArray);
+                    LOGGER.info("Echoed: " + new String(echoedArray));
                     LOGGER.info("Type any message and press enter...");
+                    inputArray = new char[Integer.parseInt(args[2])];
+                    echoedArray = new char[Integer.parseInt(args[2])];
                 }
             } catch (IOException e) {
                 LOGGER.error(e);
