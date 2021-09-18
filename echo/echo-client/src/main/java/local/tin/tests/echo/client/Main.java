@@ -54,24 +54,25 @@ public class Main {
             LOGGER.error("Usage: java -jar echo-client...jar <host name> <port number> <buffer size>");
         } else {
 
-            String hostName = args[0];
-            int portNumber = Integer.parseInt(args[1]);
+            String serviceHost = args[0];
+            int servicerPort = Integer.parseInt(args[1]);
+            int serviceBufferSize = Integer.parseInt(args[2]);
             LOGGER.info("Connecting...");
-            try (Socket echoSocket = new Socket(hostName, portNumber);
-                    PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-                    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+            try (Socket serviceScoket = new Socket(serviceHost, servicerPort);
+                    PrintWriter serviceWriter = new PrintWriter(serviceScoket.getOutputStream(), true);
+                    BufferedReader serviceInput = new BufferedReader(new InputStreamReader(serviceScoket.getInputStream()));
+                    BufferedReader dataInput = new BufferedReader(new InputStreamReader(System.in))) {
                 LOGGER.info("Connected... Please type any message and press enter...CTRL + C to exit.");
-                char[] inputArray = new char[Integer.parseInt(args[2])];
-                char[] echoedArray = new char[Integer.parseInt(args[2])];
-                while (stdIn.read(inputArray) != -1) {
-                    out.write(inputArray);
-                    out.flush();
-                    in.read(echoedArray);
+                char[] inputArray = new char[serviceBufferSize];
+                char[] echoedArray = new char[serviceBufferSize];
+                while (dataInput.read(inputArray) != -1) {
+                    serviceWriter.write(inputArray);
+                    serviceWriter.flush();
+                    serviceInput.read(echoedArray);
                     LOGGER.info("Echoed: " + new String(echoedArray));
                     LOGGER.info("Type any message and press enter...");
-                    inputArray = new char[Integer.parseInt(args[2])];
-                    echoedArray = new char[Integer.parseInt(args[2])];
+                    inputArray = new char[serviceBufferSize];
+                    echoedArray = new char[serviceBufferSize];
                 }
             } catch (IOException e) {
                 LOGGER.error(e);

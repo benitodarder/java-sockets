@@ -52,23 +52,24 @@ public class Main {
             LOGGER.error("Usage: java -jar echo-server...jar <port number> <buffer size>");
         } else {
 
-            int portNumber = Integer.parseInt(args[0]);
+            int listeningPort = Integer.parseInt(args[0]);
+            int listeningBufferSize = Integer.parseInt(args[1]);
             LOGGER.info("Waiting for connection...CTRL + C to exit.");
             try (
-                    ServerSocket serverSocket = new ServerSocket(Integer.parseInt(args[0]));
-                    Socket clientSocket = serverSocket.accept();
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
+                    ServerSocket listeningServerSocket = new ServerSocket(Integer.parseInt(args[0]));
+                    Socket listeningSocket = listeningServerSocket.accept();
+                    PrintWriter listeningWriter = new PrintWriter(listeningSocket.getOutputStream(), true);
+                    BufferedReader listeningReader = new BufferedReader(new InputStreamReader(listeningSocket.getInputStream()));) {
                 LOGGER.info("Waiting for incoming messages...CTRL + C to exit.");
-                char[] inputArray = new char[Integer.parseInt(args[1])];
-                while (in.read(inputArray) != -1) {
-                    out.write(inputArray);
-                    out.flush();
-                    LOGGER.info("Receiving and echoing: " + new String(inputArray));
-                    inputArray = new char[Integer.parseInt(args[1])];
+                char[] inputArray = new char[listeningBufferSize];
+                while (listeningReader.read(inputArray) != -1) {
+                    listeningWriter.write(inputArray);
+                    listeningWriter.flush();
+                    LOGGER.info("Received: " + new String(inputArray));
+                    inputArray = new char[listeningBufferSize];
                 }
             } catch (IOException e) {
-                LOGGER.error("Exception caught when trying to listen on port " + portNumber + " or listening for a connection", e);
+                LOGGER.error("Exception caught when trying to listen on port " + listeningPort + " or listening for a connection", e);
 
             }
         }
