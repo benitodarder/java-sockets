@@ -5,12 +5,12 @@
     <appender name="raw_console" class="org.apache.log4j.ConsoleAppender"> 
         <param name="Target" value="System.out"/> 
         <layout class="org.apache.log4j.PatternLayout"> 
-             <param name="ConversionPattern" value="%d - %m%n"/>
+             <param name="ConversionPattern" value="%m%n"/>
         </layout> 
     </appender> 
 
     <root> 
-        <priority value ="debug" /> 
+        <priority value ="info" /> 
         <appender-ref ref="raw_console" /> 
     </root>
   

@@ -18,7 +18,7 @@ public class HttpMonitor {
      */
     public static void main(String[] args) throws IOException {
         if (args.length != 3) {
-            LOGGER.error("Usage: java -jar echo-client...jar <listener port> <destination host> <destination port>");
+            LOGGER.error("Usage: java -jar ...tcp-monitor...jar <listener port> <destination host> <destination port>");
         } else {
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
