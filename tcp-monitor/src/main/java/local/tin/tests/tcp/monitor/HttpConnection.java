@@ -65,11 +65,12 @@ public class HttpConnection implements Runnable {
             PrintWriter listeningWriter = new PrintWriter(listenerSocket.getOutputStream(), true);
             listeningWriter.write(responseStringBuilder.toString());
             listeningWriter.flush();
+            LOGGER.info("- Start message --------------------------------------------");
             LOGGER.info("- Request --------------------------------------------------");
             LOGGER.info(requestStringBuilder.toString());
             LOGGER.info("- Response -------------------------------------------------");
             LOGGER.info(responseStringBuilder.toString());
-            LOGGER.info("------------------------------------------------------------");
+            LOGGER.info("- End message ----------------------------------------------");
         } catch (IOException ex) {
             LOGGER.error("Unexpected IOException!", ex);
         } finally {
